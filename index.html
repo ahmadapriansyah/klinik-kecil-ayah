@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <title>Sistem Klinik - Data Obat</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 30px; background: #fef9e7; }
+        .nav { display: flex; gap: 10px; margin-bottom: 20px; }
+        .btn { padding: 12px 20px; background: #bdc3c7; color: white; text-decoration: none; border-radius: 5px; font-weight: bold; }
+        .btn.active { background: #f39c12; }
+        table { width: 100%; border-collapse: collapse; background: white; }
+        th, td { padding: 12px; border: 1px solid #ddd; text-align: left; }
+        th { background: #f39c12; color: white; }
+    </style>
+</head>
+<body>
+
+    <h2>Sistem Hub Klinik - Data Obat (PJ: Budi)</h2>
+    <p style="color: #7f8c8d;">[SERVER 3] Hosting: GitHub Pages (Data dari Supabase Cloud)</p>
+    
+    <div class="nav">
+        <a href="http://ahmadapriansyah.infinityfree.me/pasien.php" class="btn">&larr; Data Pasien (InfinityFree)</a>
+        <a href="https://GANTI_DENGAN_URL_ALTERNATIF_APRI_NANTI" class="btn" style="background: #2ecc71;">&larr; Data Dokter (Server Apri)</a>
+        <a href="#" class="btn active">Data Obat (Supabase)</a>
+    </div>
+
+    <table>
+        <thead>
+            <tr><th>ID Obat</th><th>Nama Obat</th><th>Jenis Obat</th><th>Harga</th><th>Stok</th></tr>
+        </thead>
+        <tbody id="konten"></tbody>
+    </table>
+
+    <script>
+        // MASUKKAN URL DAN KEY SUPABASE ASLI MILIK BUDI DI SINI MAD
+        const SUPABASE_URL = 'https://gzsrlakwyeeqhzrmimtc.supabase.co';
+        const SUPABASE_KEY = 'sb_publishable_iG1o3d7kuuee6inG5z0QlA_TldOBZwm';
+
+        fetch(`${SUPABASE_URL}/rest/v1/obat?select=*`, {
+            method: 'GET',
+            headers: {
+                'apikey': SUPABASE_KEY,
+                'Authorization': `Bearer ${SUPABASE_KEY}`,
+                'Content-Type': 'application/json'
+            }
+        })
+        .then(res => res.json())
+        .then(data => {
+            let out = '';
+            data.forEach(x => {
+                out += `<tr>
+                    <td>OBT-${x.id_obat}</td>
+                    <td><strong>${x.nama_obat}</strong></td>
+                    <td>${x.jenis_obat}</td>
+                    <td>Rp ${parseInt(x.harga).toLocaleString('id-ID')}</td>
+                    <td>${x.stok} Unit</td>
+                </tr>`;
+            });
+            document.getElementById('konten').innerHTML = out;
+        });
+    </script>
+</body>
+</html>
